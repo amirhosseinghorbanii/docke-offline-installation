@@ -1,76 +1,89 @@
-#🚀 Docker Offline Installation Script (Ubuntu)
-This script installs Docker CE on Ubuntu systems using a custom APT repository and configures the Docker daemon with custom storage and registry settings.
+# 🐳 Docker Installer for Ubuntu with Custom Nexus Registry
 
-📋 Features
-Adds Docker GPG key (hardcoded in the script).
+This script installs **Docker CE** on Ubuntu using a **custom Nexus APT repository** and configures Docker to use a local **Nexus Docker registry** and custom **data-root**.
 
-Adds a custom APT repository (pointing to a Nexus proxy repo).
+---
 
-Configures Docker daemon to:
+## 📦 What This Script Does
 
-Use /data/docker as its data root.
+✅ Installs Docker CE using a custom APT repo  
+✅ Configures Docker to:
 
-Use an insecure local registry (http://nexusoss-ip:8082).
+- Use `/data/docker` as its data directory
+- Use a local insecure registry (`http://nexusoss-ip:8082`)
+- Use a registry mirror (`http://nexusoss-ip:8082`)
 
-Creates necessary directories and permissions.
+✅ Sets proper permissions  
+✅ Reloads and restarts Docker
 
-⚠️ Requirements
-Ubuntu-based system.
+---
 
-Root privileges or sudo access.
+## ⚙️ Requirements
 
-The nexusoss-ip must be resolvable and accessible for:
+- Ubuntu (22.04+ recommended)
+- `sudo` or root access
+- A Nexus server hosting:
+  - APT Docker proxy at: `http://nexusoss-ip:8081/repository/apt-docker-repo-24.04/`
+  - Docker registry at: `http://nexusoss-ip:8082`
 
-APT Docker repo at http://nexusoss-ip:8081/repository/apt-docker-repo-24.04/
+---
 
-Docker image registry at http://nexusoss-ip:8082
+## 🚀 Installation
 
-📦 Packages Installed
-docker-ce
+1. Clone this repo:
 
-docker-ce-cli
+```bash
+git clone https://github.com/yourname/docker-nexus-installer.git
+cd docker-nexus-installer
+```
 
-containerd.io
+2. Make the script executable:
 
-docker-buildx-plugin
-
-docker-compose-plugin
-
-🛠️ Usage
-Make the script executable:
-
+```bash
 chmod +x install-docker.sh
-Run the script:
+```
 
+3. Run the script:
+
+```bash
 sudo ./install-docker.sh
-📁 Files Created
-/etc/apt/keyrings/docker.asc: GPG key for Docker repo.
+```
 
-/etc/apt/sources.list.d/docker.list: APT source for Docker.
+---
 
-/etc/docker/daemon.json: Custom Docker daemon config.
+## 🛠 Configuration File
 
-/data/docker: Custom Docker data directory.
+**`/etc/docker/daemon.json`**:
 
-✅ Example Configuration in daemon.json
+```json
 {
   "data-root": "/data/docker",
   "insecure-registries": ["http://nexusoss-ip:8082"],
   "registry-mirrors": ["http://nexusoss-ip:8082"]
 }
-🧯 Troubleshooting
-If installation fails, ensure:
+```
 
-The Nexus proxy URLs are correct and accessible.
+---
 
-You’re using the correct Ubuntu codename (e.g. jammy, focal, etc.).
+## 📁 Created Directories & Files
 
-DNS can resolve nexusoss-ip or use the actual IP address.
+| Path                             | Purpose                          |
+|----------------------------------|----------------------------------|
+| `/data/docker`                   | Docker's custom data directory   |
+| `/etc/docker/daemon.json`        | Custom Docker config             |
+| `/etc/apt/keyrings/docker.asc`   | GPG key for APT Docker repo      |
+| `/etc/apt/sources.list.d/docker.list` | Docker APT source list     |
 
-📌 Notes
-The script uses a hardcoded GPG key—ensure it is up to date and valid.
+---
 
-You can replace nexusoss-ip with your actual Nexus IP or hostname.
+## ❗ Troubleshooting
 
-Make sure your Nexus is correctly configured to serve the necessary APT and Docker registry endpoints.
+- Make sure the Nexus IP/hostname is reachable.
+- Use `ip` instead of `nexusoss-ip` if DNS is unavailable.
+- Ensure Nexus proxy repositories are correctly configured.
 
+---
+
+## 📄 License
+
+MIT License © [Your Name]
