@@ -33,7 +33,7 @@ This script installs **Docker CE** on Ubuntu using a **custom Nexus APT reposito
 1. Clone this repo:
 
 ```bash
-git clone https://github.com/yourname/docker-nexus-installer.git
+git clone https://github.com/amirhosseinghorbanii/docker-nexus-installer.git
 cd docker-nexus-installer
 ```
 
