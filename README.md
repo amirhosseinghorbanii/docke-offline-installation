@@ -81,9 +81,3 @@ sudo ./install-docker.sh
 - Make sure the Nexus IP/hostname is reachable.
 - Use `ip` instead of `nexusoss-ip` if DNS is unavailable.
 - Ensure Nexus proxy repositories are correctly configured.
-
----
-
-## 📄 License
-
-MIT License © [Your Name]
